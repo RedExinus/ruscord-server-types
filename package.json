@@ -1,0 +1,26 @@
+{
+  "name": "@redexinus/ruscord_backend_types",
+  "version": "1.0.0",
+  "projects": [
+    "ruscord_backend_api",
+    "ruscord_frontend",
+    "https://ruscord.goidagaming.one"
+  ],
+  "exports": {
+    ".": {
+      "types": {
+        "default": "./index.d.ts"
+      }
+    }
+  },
+  "types": "index",
+  "keywords": [
+    "ruscord",
+    "ruscord_backernd_api"
+  ],
+  "author": "RedExinus Team",
+  "description": "Contains types for Ruscord backend API.",
+  "devDependencies": {
+    "@types/ruscord_server": "workspace:."
+  }
+}
