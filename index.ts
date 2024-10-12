@@ -62,7 +62,7 @@ export interface ApiResponse<T = any> {
 }
 
 /** Represents device confirmation data. */
-export interface ConfirmDeviceData {
+export interface ConfirmDeviceRequest {
   /** Gets request ID. */
   requestId: string;
 
@@ -80,7 +80,7 @@ export interface DeviceData {
 }
 
 /** Represents a sign in data. */
-export interface SignInData {
+export interface SignInRequest {
   /** Gets login or email. */
   identity: string;
 
@@ -92,7 +92,7 @@ export interface SignInData {
 }
 
 /** Represents a sign up. */
-export interface SignUpData {
+export interface SignUpRequest {
   /** Gets login. */
   login: string;
 
