@@ -19,11 +19,6 @@
   },
   "main": "./index.js",
   "types": "./index.d.ts",
-  "exports": {
-    "./*.js": "./*.js",
-    "./*.d.ts": "./*.d.ts",
-    "./package.json": "./package.json"
-  },
   "homepage": "https://github.com/RedExinus/ruscord_server_types#readme",
   "repository": {
     "type": "github",
