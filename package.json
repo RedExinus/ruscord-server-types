@@ -1,20 +1,37 @@
 {
-  "name": "@redexinus/ruscord_backend_types",
-  "version": "1.1.0",
-  "projects": [
-    "ruscord_app",
-    "ruscord_backend_api",
-    "https://ruscord.goidagaming.one"
-  ],
-  "main": "main.js",
-  "types": "index.d.ts",
+  "name": "@ruscord/server_types",
+  "description": "TypeScript declarations for Ruscord server API.",
+  "version": "2.0.0",
   "keywords": [
     "ruscord",
     "ruscord_app",
-    "ruscord_backernd_api"
+    "ruscord_server_api"
   ],
   "author": "RedExinus Team",
-  "description": "TypeScript definition Ruscord backend API.",
+  "contributors": [
+    {
+      "name": "Nikita Denisov",
+      "url": "https://github.com/EmptyChapter"
+    }
+  ],
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "./*.js": "./*.js",
+    "./*.d.ts": "./*.d.ts",
+    "./package.json": "./package.json"
+  },
+  "homepage": "https://github.com/RedExinus/ruscord_server_types#readme",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/RedExinus/ruscord_server_types"
+  },
+  "bugs": {
+    "url": "https://github.com/RedExinus/ruscord_server_types/issues"
+  },
   "publishConfig": {
     "access": "public"
   }

@@ -1,1 +1,1 @@
-# Ruscrod server API types.
+# TypeScript declarations for Ruscord server API.
