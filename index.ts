@@ -289,7 +289,7 @@ export type FieldError = {
  */
 export type AlternativeError = {
   /** Gets error type. */
-  type: "alternative";
+  type: "alternative" | "unknown";
 
   /** Gets error message for this alternative validation check. */
   message: ValidationMessage;
