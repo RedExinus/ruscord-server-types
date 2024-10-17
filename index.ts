@@ -129,3 +129,189 @@ export interface SignUpRequest {
   /** Gets device data. */
   deviceData: DeviceData;
 }
+
+/** Defines properties of a Module error. */
+export interface ModuleError {
+  /** Gets error name. */
+  name: string;
+
+  /** Gets error message. */
+  message: string;
+
+  /** Gets error cause if provided. */
+  cause?: unknown;
+}
+
+/**
+ * Contains a collection of validation check names.
+ * @remarks Check names should be read negated.
+ */
+export enum ValidationCheck {
+  /** Indicates that unknown check failed. */
+  UNKNOWN,
+
+  /** Indicates that field was not alphabetic (a-zA-Z). */
+  ALPHA,
+
+  /** Indicates that field was not alphanumeric. */
+  ALPHANUMERIC,
+
+  /** Indicates that fiels was not a boolean. */
+  BOOLEAN,
+
+  /** Indicates that field does not contain substring/char. */
+  CONTAINS,
+
+  /** Indicates that field was not a credit card number. */
+  CREDIT_CARD,
+
+  /** Indicates that field was not a date. */
+  DATE,
+
+  /** Indicates that field was not a decimal. */
+  DECIMAL,
+
+  /** Indicates that field cannot be divided by some number. */
+  DIVISIBLE_BY,
+
+  /** Indicates that field was not an email. */
+  EMAIL,
+
+  /** Indicates that field was not empty. */
+  EMPTY,
+
+  /** Indicates that field was not equal to some valud. */
+  EQUALS,
+
+  /** Indicates that field does not exist. */
+  EXISTS,
+
+  /** Indicates that field was not a float. */
+  FLOAT,
+
+  /** Indicates that field was not a fully qualified domain name. */
+  FQDN,
+
+  /** Indicates that field was not an hexadecimal. */
+  HEXADECIMAL,
+
+  /** Indicates that field was not an HEX color. */
+  HEX_COLOR,
+
+  /** Indicates that field was not in an array. */
+  IN,
+
+  /** Indicates that field was not a JSON. */
+  JSON,
+
+  /** Indicates that field length was less than or greater than given range. */
+  LENGTH,
+
+  /** Indicates that field was not a locale name. */
+  LOCALE,
+
+  /** Indicates that field was not in a lowercase. */
+  LOWERCASE,
+
+  /** Indicates that field does not matches to a valid MIME type format. */
+  MIME_TYPE,
+
+  /** Indicates that field was not a mobile phone number. */
+  MOBILE_PHONE,
+
+  /** Indicates that field was empty. */
+  NOT_EMPTY,
+
+  /** Indicates that field was not a number. */
+  NUMBER,
+
+  /** Indicates that field was not a numeric. */
+  NUMERIC,
+
+  /** Indicates that field was not a port. */
+  PORT,
+
+  /** Indicates that field was not a string. */
+  STRING,
+
+  /** Indicates that field was not a strong password. */
+  STRONG_PASSWORD,
+
+  /** Indicates that field was not a time. */
+  TIME,
+
+  /** Indicates that field was not in an uppercase. */
+  UPPERCASE,
+
+  /** Indicates that field was not an URL. */
+  URL,
+
+  /** Indicates that field was not an UUID. */
+  UUID,
+
+  /** Indicates that field was not an IP address. */
+  IP,
+}
+
+/** Points where error occurred. */
+declare type Location = "body" | "cookies" | "headers" | "params" | "query";
+
+/** Defines fields of an error message. */
+export interface ValidationMessage {
+  /** Gets the name of a failed check. */
+  check: ValidationCheck;
+
+  /** Gets an error message. */
+  message?: string | undefined;
+}
+
+/** Defines properties of a field validation error. */
+export type FieldError = {
+  /** Gets error type. */
+  type: "field";
+
+  /** Gets field name. */
+  field: string;
+
+  /** Gets field value */
+  value?: string | undefined;
+
+  /** Gets field location. */
+  location?: Location | undefined;
+
+  /** Gets the name of a check and error message. */
+  message: ValidationMessage;
+};
+
+/**
+ * Defines properties of an alternative validation error.
+ * @remarks Thrown when compaining A | B. Contain errors from the first check group.
+ */
+export type AlternativeError = {
+  /** Gets error type. */
+  type: "alternative";
+
+  /** Gets error message for this alternative validation check. */
+  message: ValidationMessage;
+
+  /** Gets a collection of field errors. */
+  errors: FieldError[];
+};
+
+/**
+ * Defines properties of a grouped alternative validation error.
+ * @remarks Thrown when comparing [ A | B | C | ... ]. Contains all errors from every check group.
+ */
+export type GroupedAlternativeError = {
+  /** Gets error type. */
+  type: "grouped";
+
+  /** Gets error message for this alternative validation group. */
+  message: ValidationMessage;
+
+  /** Gets grouped collection of field errors. */
+  errors: FieldError[][];
+};
+
+/** Defines type of a validation result. */
+export type ValidationResult = (FieldError | AlternativeError | GroupedAlternativeError)[];
