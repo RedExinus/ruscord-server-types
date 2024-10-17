@@ -3,38 +3,44 @@ export enum ApiStatusCodes {
   /** General success. */
   SUCCESS = 501,
 
-  /** Structure provided by user has some missing fields. */
+  /** Data provided by user has some missing fields. */
   MALFORMED_DATA = 2001,
 
-  /** Structure validation failed. */
+  /** Data validation failed. */
   VALIDATION_FAILED = 2011,
 
-  /** Structure validation succeeded. */
+  /** Data validation succeeded. */
   VALIDATION_SUCCEEDED = 2012,
 
-  /** Data or file found. */
+  /** Data found/exists. */
   FOUND = 3001,
 
-  /** Data or file not found. */
+  /** Data not found/exists. */
   NOT_FOUND = 3002,
 
-  /** Data or file deleted. */
+  /** Data deleted. */
   DELETED = 3003,
 
-  /** Data or file corrupted. */
+  /** Data corrupted. */
   CORRUPTED = 3004,
 
   /** Authentication succeeded. */
   AUTHENTICATED = 4001,
 
-  /** Authorization failed. */
+  /** Authentication failed. */
   UNAUTHENTICATED = 4002,
 
   /** Unauthorized access to API nodes of denied access to FS or logical modules. */
   UNAUTHORIZED = 4003,
 
-  /** New device needs confirmation via 2FA. */
+  /** Action requires confirmation via OTP. */
   CONFIRMATION_REQUIRED = 4004,
+
+  /** Action confirmation code was resent to an email. */
+  CONFIRMATION_RESENT = 4005,
+
+  /** Action confirmation code has expired. */
+  CONFIRMATION_EXPIRED = 4006,
 
   /** Something went wrong on a server side. */
   SERVER_FAULT = 8001,
@@ -49,28 +55,40 @@ export enum ApiStatusCodes {
   DATABASE_FAULT = 8012,
 }
 
-/** Represents a Ruscord API response. */
+/** Defines properties of a Ruscord API response. */
 export interface ApiResponse<T = any> {
   /** Gets response status code. */
   status: ApiStatusCodes;
 
   /** Gets response message. */
-  message?: string;
+  message?: string | undefined;
 
   /** Gets response data. */
-  data?: T;
+  data?: T | undefined;
 }
 
-/** Represents device confirmation data. */
-export interface ConfirmDeviceRequest {
-  /** Gets request ID. */
-  requestId: string;
-
+/** Defines properties of a confirm action request. */
+export interface ConfirmRequest {
   /** Gets confrimation code. */
-  value: number;
+  code: number;
 }
 
-/** Represents a device data. */
+/** Defines properties of a 2FA setup response. */
+export interface Setup2faResponse {
+  /** Gets QR-code data string. */
+  qrCode: string;
+
+  /** Gets antiforgery token. */
+  antiforgery: string;
+}
+
+/** Defines properties of a 2FA confirmation request. */
+export interface Confirm2faRequest {
+  /** Gets antiforgery token. */
+  antiforgery: string;
+}
+
+/** Defines properties of a device data. */
 export interface DeviceData {
   /** Gets device name. */
   name: string;
@@ -79,7 +97,7 @@ export interface DeviceData {
   print: string;
 }
 
-/** Represents a sign in data. */
+/** Defines properties of a sign-in request. */
 export interface SignInRequest {
   /** Gets login or email. */
   identity: string;
@@ -88,10 +106,16 @@ export interface SignInRequest {
   password: string;
 
   /** Gets device data. */
-  device: DeviceData;
+  deviceData: DeviceData;
 }
 
-/** Represents a sign up. */
+/** Defines properties of a sign in response. */
+export interface SignInResponse {
+  /** Gets access token. */
+  accessToken: string;
+}
+
+/** Defines properties of a sign-up request. */
 export interface SignUpRequest {
   /** Gets login. */
   login: string;
@@ -103,5 +127,5 @@ export interface SignUpRequest {
   password: string;
 
   /** Gets device data. */
-  device: DeviceData;
+  deviceData: DeviceData;
 }

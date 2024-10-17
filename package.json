@@ -1,11 +1,11 @@
 {
   "name": "@ruscord/server_types",
   "description": "TypeScript declarations for Ruscord server API.",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "keywords": [
     "ruscord",
-    "ruscord_app",
-    "ruscord_server_api"
+    "ruscord-app",
+    "ruscord-server-api"
   ],
   "author": "RedExinus Team",
   "contributors": [
