@@ -19,13 +19,13 @@
   },
   "main": "./index.js",
   "types": "./index.d.ts",
-  "homepage": "https://github.com/RedExinus/ruscord_server_types#readme",
+  "homepage": "https://github.com/RedExinus/ruscord-server-types#readme",
   "repository": {
     "type": "github",
-    "url": "https://github.com/RedExinus/ruscord_server_types"
+    "url": "https://github.com/RedExinus/ruscord-server-types"
   },
   "bugs": {
-    "url": "https://github.com/RedExinus/ruscord_server_types/issues"
+    "url": "https://github.com/RedExinus/ruscord-server-types/issues"
   },
   "publishConfig": {
     "access": "public"
