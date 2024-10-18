@@ -113,6 +113,9 @@ export interface SignInRequest {
 export interface SignInResponse {
   /** Gets access token. */
   accessToken: string;
+
+  /** Gets refresh token. */
+  refreshToken: string;
 }
 
 /** Defines properties of a sign-up request. */
