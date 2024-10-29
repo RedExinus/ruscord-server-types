@@ -77,15 +77,6 @@ export interface ConfirmRequest {
 export interface Setup2faResponse {
   /** Gets QR-code data string. */
   qrCode: string;
-
-  /** Gets antiforgery token. */
-  antiforgery: string;
-}
-
-/** Defines properties of a 2FA confirmation request. */
-export interface Confirm2faRequest {
-  /** Gets antiforgery token. */
-  antiforgery: string;
 }
 
 /** Defines properties of a device data. */
