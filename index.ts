@@ -309,3 +309,9 @@ export type GroupedAlternativeError = {
 
 /** Defines type of a validation result. */
 export type ValidationResult = (FieldError | AlternativeError | GroupedAlternativeError)[];
+
+/** Contains a collection of an action types. */
+export enum ActionType {
+  /** Sign-in/up action. */
+  AUTHENTICATION,
+}
