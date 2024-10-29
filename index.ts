@@ -1,6 +1,8 @@
-/** Contains a collection of Ruscord API status codes. */
+//#region API Response
+
+/** Contains a collection of API status codes. */
 export enum ApiStatusCodes {
-  /** General success. */
+  /** Success. */
   SUCCESS = 501,
 
   /** Data provided by user has some missing fields. */
@@ -30,93 +32,160 @@ export enum ApiStatusCodes {
   /** Authentication failed. */
   UNAUTHENTICATED = 4002,
 
+  /** Authorization succeded. */
+  AUTHORIZED = 4003,
+
   /** Unauthorized access to API nodes of denied access to FS or logical modules. */
-  UNAUTHORIZED = 4003,
+  UNAUTHORIZED = 4004,
 
   /** Action requires confirmation via OTP. */
-  CONFIRMATION_REQUIRED = 4004,
+  CONFIRMATION_REQUIRED = 4011,
 
   /** Action confirmation code was resent to an email. */
-  CONFIRMATION_RESENT = 4005,
+  CONFIRMATION_RESENT = 4012,
 
   /** Action confirmation code has expired. */
-  CONFIRMATION_EXPIRED = 4006,
+  CONFIRMATION_EXPIRED = 4013,
+
+  /** Device is blocked. */
+  DEVICE_BLOCKED = 4014,
 
   /** Something went wrong on a server side. */
   SERVER_FAULT = 8001,
 
   /** Something went wrong on a client side. */
   CLIENT_FAULT = 8002,
-
-  /** Someone should be fired... */
-  MODULE_FAULT = 8011,
-
-  /** Something went wrong on a database side. */
-  DATABASE_FAULT = 8012,
 }
 
-/** Defines properties of a Ruscord API response. */
+/** Defines properties of an API response. */
 export interface ApiResponse<T = any> {
-  /** Gets response status code. */
+  /** Gets status code. */
   status: ApiStatusCodes;
 
   /** Gets response message. */
-  message?: string | undefined;
+  message?: string;
 
   /** Gets response data. */
-  data?: T | undefined;
+  data?: T;
 }
 
-/** Defines properties of a confirm action request. */
-export interface ConfirmRequest {
-  /** Gets confrimation code. */
-  code: number;
+//#endregion
+
+//#region Common
+
+/** Defines properties of soft deletable entity. */
+interface SoftDelete {
+  /** Gets creation date of an entity. */
+  createdAt: Date;
+
+  /** Gets modification date of an entity. */
+  updatedAt: Date;
+
+  /** Gets removal date of an entity if it was removed. */
+  removedAt?: Date;
 }
 
-/** Defines properties of a 2FA setup response. */
-export interface Setup2faResponse {
-  /** Gets QR-code data string. */
+//#endregion
+
+//#region Devices
+
+/** Contains a collection of platforms. */
+export enum Platforms {
+  /** Web platform. */
+  WEB = 14071047,
+
+  /** Mobile platform. */
+  MOBILE = 25082058,
+
+  /** Desktop platform. */
+  DESKTOP = 36093069,
+}
+
+/** Defined properties of device data. */
+export interface DeviceData {
+  /** Gets device identity. */
+  identity: string;
+
+  /** Gets device fingerprint. */
+  fingerprint: string;
+
+  /** Gets device platform id. */
+  platformId: Platforms;
+}
+
+/** Defined properties of device info. */
+export interface DeviceInfo extends DeviceData, SoftDelete {
+  /** Gets device id. */
+  id: number;
+
+  /** Gets whether or not device is confirmed. */
+  confirmed: boolean;
+
+  /** Gets whether or not device is blocked. */
+  blocked: boolean;
+}
+
+//#endregion
+
+//#region Account
+
+export interface UserShortInfo extends SoftDelete {
+  /** Gets username. */
+  username: string;
+
+  /** Gets user`s avatar source. */
+  avatarSrc?: string;
+
+  /** Gets user`s primary color. */
+  prmColor?: string;
+
+  /** Gets user`s last activity date. */
+  lastActiveAt: Date;
+}
+
+export interface UserFullInfo extends UserShortInfo {
+  /** Gets user`s status source. */
+  status?: string;
+
+  /** Gets user`s description source. */
+  description?: string;
+
+  /** Gets user`s banner source. */
+  bannedSrc?: string;
+
+  /** Gets user`s secondary color. */
+  sndColor?: string;
+}
+
+/** Defines properties of TOTP set-up response. */
+export interface TotpSetUpResponse {
+  /** Gets TOTP url-encoded QR code. */
   qrCode: string;
 }
 
-/** Defines properties of a device data. */
-export interface DeviceData {
-  /** Gets device name. */
-  name: string;
+export interface TotpRestoreRequest {
+  /** Gets email address. */
+  email: string;
 
-  /** Gets device fingerprint. */
-  print: string;
+  /** Gets restore code. */
+  code: string;
 }
+
+/** Defines properties of TOTP restore codes response */
+export interface TotpRestoreResponse {
+  /** Gets a collection of restore codes. */
+  restore: string[];
+}
+
+//#endregion
+
+//#region Authentication
 
 /** Defines properties of a sign-in request. */
 export interface SignInRequest {
-  /** Gets login or email. */
-  identity: string;
-
-  /** Gets password. */
-  password: string;
-
-  /** Gets device data. */
-  deviceData: DeviceData;
-}
-
-/** Defines properties of a sign in response. */
-export interface SignInResponse {
-  /** Gets access token. */
-  accessToken: string;
-
-  /** Gets refresh token. */
-  refreshToken: string;
-}
-
-/** Defines properties of a sign-up request. */
-export interface SignUpRequest {
   /** Gets login. */
   login: string;
 
-  /** Gets email. */
-  email: string;
-
   /** Gets password. */
   password: string;
 
@@ -124,194 +193,155 @@ export interface SignUpRequest {
   deviceData: DeviceData;
 }
 
-/** Defines properties of a Module error. */
-export interface ModuleError {
-  /** Gets error name. */
-  name: string;
+/** Defines properties of a sign-in response. */
+export interface SignInResponse {
+  /** Gets an access token. */
+  accessToken: string;
 
-  /** Gets error message. */
-  message: string;
-
-  /** Gets error cause if provided. */
-  cause?: unknown;
+  /** Gets an update token. */
+  updateToken: string;
 }
 
-/**
- * Contains a collection of validation check names.
- * @remarks Check names should be read negated.
- */
-export enum ValidationCheck {
-  /** Indicates that unknown check failed. */
-  UNKNOWN,
+/** Defines properties of a sign-up request. */
+export interface SignUpRequest extends SignInRequest {
+  /** Gets email. */
+  email: string;
+}
 
+/** Defines properties of refresh token response. */
+export interface RefreshResponse extends SignInResponse {}
+
+//#endregion
+
+//#region Validation
+
+/** Contains a collection of validation check names. */
+export enum ValidationCheck {
   /** Indicates that field was not alphabetic (a-zA-Z). */
-  ALPHA,
+  NOT_ALPHA,
 
   /** Indicates that field was not alphanumeric. */
-  ALPHANUMERIC,
+  NOT_ALPHANUMERIC,
 
   /** Indicates that fiels was not a boolean. */
-  BOOLEAN,
+  NOT_BOOLEAN,
 
   /** Indicates that field does not contain substring/char. */
-  CONTAINS,
+  NOT_CONTAINS,
 
   /** Indicates that field was not a credit card number. */
-  CREDIT_CARD,
+  NOT_CREDIT_CARD,
 
   /** Indicates that field was not a date. */
-  DATE,
+  NOT_DATE,
 
-  /** Indicates that field was not a decimal. */
-  DECIMAL,
+  /** Indicates that field was not a decimal number. */
+  NOT_DECIMAL,
 
   /** Indicates that field cannot be divided by some number. */
-  DIVISIBLE_BY,
+  NOT_DIVISIBLE_BY,
 
   /** Indicates that field was not an email. */
-  EMAIL,
+  NOT_EMAIL,
 
   /** Indicates that field was not empty. */
-  EMPTY,
-
-  /** Indicates that field was not equal to some valud. */
-  EQUALS,
-
-  /** Indicates that field does not exist. */
-  EXISTS,
-
-  /** Indicates that field was not a float. */
-  FLOAT,
-
-  /** Indicates that field was not a fully qualified domain name. */
-  FQDN,
-
-  /** Indicates that field was not an hexadecimal. */
-  HEXADECIMAL,
-
-  /** Indicates that field was not an HEX color. */
-  HEX_COLOR,
-
-  /** Indicates that field was not in an array. */
-  IN,
-
-  /** Indicates that field was not a JSON. */
-  JSON,
-
-  /** Indicates that field length was less than or greater than given range. */
-  LENGTH,
-
-  /** Indicates that field was not a locale name. */
-  LOCALE,
-
-  /** Indicates that field was not in a lowercase. */
-  LOWERCASE,
-
-  /** Indicates that field does not matches to a valid MIME type format. */
-  MIME_TYPE,
-
-  /** Indicates that field was not a mobile phone number. */
-  MOBILE_PHONE,
-
-  /** Indicates that field was empty. */
   NOT_EMPTY,
 
+  /** Indicates that field was not equal to some valud. */
+  NOT_EQUALS,
+
+  /** Indicates that field does not exist. */
+  NOT_EXISTS,
+
+  /** Indicates that field was not a float. */
+  NOT_FLOAT,
+
+  /** Indicates that field was not a fully qualified domain name. */
+  NOT_FQDN,
+
+  /** Indicates that field was not an hexadecimal. */
+  NOT_HEXADECIMAL,
+
+  /** Indicates that field was not an HEX color. */
+  NOT_HEX_COLOR,
+
+  /** Indicates that field was not in an array. */
+  NOT_IN,
+
+  /** Indicates that field was not a JSON. */
+  NOT_JSON,
+
+  /** Indicates that field length was less than or greater than given range. */
+  NOT_LENGTH,
+
+  /** Indicates that field was not a locale name. */
+  NOT_LOCALE,
+
+  /** Indicates that field was not in a lowercase. */
+  NOT_LOWERCASE,
+
+  /** Indicates that field does not matches to a valid MIME type format. */
+  NOT_MIME_TYPE,
+
+  /** Indicates that field was not a mobile phone number. */
+  NOT_MOBILE_PHONE,
+
+  /** Indicates that field was empty. */
+  EMPTY,
+
   /** Indicates that field was not a number. */
-  NUMBER,
+  NOT_NUMBER,
 
   /** Indicates that field was not a numeric. */
-  NUMERIC,
+  NOT_NUMERIC,
 
   /** Indicates that field was not a port. */
-  PORT,
+  NOT_PORT,
 
   /** Indicates that field was not a string. */
-  STRING,
+  NOT_STRING,
 
   /** Indicates that field was not a strong password. */
-  STRONG_PASSWORD,
+  NOT_STRONG_PASSWORD,
 
   /** Indicates that field was not a time. */
-  TIME,
+  NOT_TIME,
 
   /** Indicates that field was not in an uppercase. */
-  UPPERCASE,
+  NOT_UPPERCASE,
 
   /** Indicates that field was not an URL. */
-  URL,
+  NOT_URL,
 
   /** Indicates that field was not an UUID. */
-  UUID,
+  NOT_UUID,
 
   /** Indicates that field was not an IP address. */
-  IP,
+  NOT_IP,
 }
 
 /** Points where error occurred. */
 declare type Location = "body" | "cookies" | "headers" | "params" | "query";
 
-/** Defines fields of an error message. */
-export interface ValidationMessage {
-  /** Gets the name of a failed check. */
-  check: ValidationCheck;
-
-  /** Gets an error message. */
-  message?: string | undefined;
-}
-
-/** Defines properties of a field validation error. */
-export type FieldError = {
-  /** Gets error type. */
-  type: "field";
-
-  /** Gets field name. */
+/** Defines properties of validation error. */
+export interface ValidationError {
+  /** Gets field`s name. */
   field: string;
 
-  /** Gets field value */
-  value?: string | undefined;
+  /** Gets the name of failed check. */
+  check: ValidationCheck;
 
-  /** Gets field location. */
-  location?: Location | undefined;
+  /** Gets field`s location. */
+  location: Location;
 
-  /** Gets the name of a check and error message. */
-  message: ValidationMessage;
-};
+  /** Gets error message. */
+  message?: string;
 
-/**
- * Defines properties of an alternative validation error.
- * @remarks Thrown when compaining A | B. Contain errors from the first check group.
- */
-export type AlternativeError = {
-  /** Gets error type. */
-  type: "alternative" | "unknown";
-
-  /** Gets error message for this alternative validation check. */
-  message: ValidationMessage;
-
-  /** Gets a collection of field errors. */
-  errors: FieldError[];
-};
-
-/**
- * Defines properties of a grouped alternative validation error.
- * @remarks Thrown when comparing [ A | B | C | ... ]. Contains all errors from every check group.
- */
-export type GroupedAlternativeError = {
-  /** Gets error type. */
-  type: "grouped";
-
-  /** Gets error message for this alternative validation group. */
-  message: ValidationMessage;
-
-  /** Gets grouped collection of field errors. */
-  errors: FieldError[][];
-};
-
-/** Defines type of a validation result. */
-export type ValidationResult = (FieldError | AlternativeError | GroupedAlternativeError)[];
-
-/** Contains a collection of an action types. */
-export enum ActionType {
-  /** Sign-in/up action. */
-  AUTHENTICATION,
+  /** Gets field`s value. */
+  value?: any;
 }
+
+/** Defines validation result type. */
+export type ValidationResult = ValidationError[];
+
+//#endregion
