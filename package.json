@@ -1,7 +1,7 @@
 {
   "name": "@redexinus/ruscord-server-types",
   "description": "TypeScript declarations for Ruscord server API.",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "keywords": [
     "ruscord",
     "ruscord-app",
