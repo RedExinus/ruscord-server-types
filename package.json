@@ -1,7 +1,7 @@
 {
-  "name": "@ruscord/server_types",
+  "name": "@redexinus/ruscord-server-types",
   "description": "TypeScript declarations for Ruscord server API.",
-  "version": "2.5.2",
+  "version": "3",
   "keywords": [
     "ruscord",
     "ruscord-app",
@@ -19,15 +19,15 @@
   },
   "main": "./index.js",
   "types": "./index.d.ts",
-  "homepage": "https://github.com/RedExinus/ruscord-server-types#readme",
+  "homepage": "https://github.com/RedExinus/ruscord-server-types/tree/nest-js#readme",
   "repository": {
     "type": "github",
-    "url": "https://github.com/RedExinus/ruscord-server-types"
+    "url": "https://github.com/RedExinus/ruscord-server-types/tree/nest-js.git"
   },
   "bugs": {
-    "url": "https://github.com/RedExinus/ruscord-server-types/issues"
+    "url": "https://github.com/RedExinus/ruscord-server-types/tree/nest-js/issues"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   }
 }
