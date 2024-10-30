@@ -109,8 +109,8 @@ export interface DeviceData {
   /** Gets device fingerprint. */
   fingerprint: string;
 
-  /** Gets device platform id. */
-  platformId: Platforms;
+  /** Gets device platform. */
+  platform: Platforms;
 }
 
 /** Defined properties of device info. */
